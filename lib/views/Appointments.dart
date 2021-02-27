@@ -4,11 +4,14 @@ import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:geocoder/geocoder.dart';
 import 'package:intl/intl.dart';
+import 'package:vaccio/controller/DataController.dart';
 import 'package:vaccio/res/colors.dart' as colors;
 import 'dart:core';
 import 'package:vaccio/controller/AppController.dart';
 import 'package:get/get.dart';
 import 'package:vaccio/views/MapView.dart';
+
+import 'Nearby.dart';
 
 class Appointments extends StatefulWidget {
   @override
@@ -44,8 +47,8 @@ class _AppointmentsState extends State<Appointments> {
                     if (snapshot.data != null) {
                       if (snapshot.data.docs != null &&
                           snapshot.data.docs.isEmpty == false) {
-                        print(snapshot.data.docs.isEmpty);
                         final documents = snapshot.data.docs;
+
                         return Container(
                           child: ListView.builder(
                             itemBuilder: (BuildContext context, int index) {
@@ -85,7 +88,7 @@ class _AppointmentsState extends State<Appointments> {
                                         color: Colors.black,
                                         borderRadius: BorderRadius.circular(5)),
                                     child: OutlineButton(
-                                      onPressed: () async {},
+                                      onPressed: () => Get.to(() => Nearby()),
                                       child: Text(
                                         'Book one now!',
                                         style: TextStyle(
@@ -101,12 +104,22 @@ class _AppointmentsState extends State<Appointments> {
                       }
                     } else {
                       return Padding(
-                        padding: const EdgeInsets.all(8.0),
+                        padding:
+                            EdgeInsets.only(top: 50.0, left: 20.0, right: 20.0),
                         child: Center(
-                          child: new SvgPicture.asset(
-                            "assets/images/mask-man.svg",
-                            height: 300,
-                            fit: BoxFit.fitWidth,
+                          child: Container(
+                            width: double.infinity,
+                            decoration: BoxDecoration(
+                                color: Colors.black,
+                                borderRadius: BorderRadius.circular(5)),
+                            child: OutlineButton(
+                              onPressed: () => Get.to(() => Nearby()),
+                              child: Text(
+                                'Oopsie! , try Again!',
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 20),
+                              ),
+                            ),
                           ),
                         ),
                       );
@@ -132,6 +145,7 @@ class AppointmentCard extends StatefulWidget {
 }
 
 class _AppointmentCardState extends State<AppointmentCard> {
+  final dataController = Get.put(DataController());
   String place = '', addressline = '';
   String formatDate(var date) {
     DateTime myDateTime = (date).toDate();
@@ -161,6 +175,7 @@ class _AppointmentCardState extends State<AppointmentCard> {
   void initState() {
     finalPlace();
     super.initState();
+    dataController.fetchCentres();
   }
 
   @override
@@ -169,7 +184,7 @@ class _AppointmentCardState extends State<AppointmentCard> {
         padding: EdgeInsets.only(top: 5.0, bottom: 5.0),
         child: InkWell(
           onTap: () {
-            Get.to(MapView(destination:place));
+            Get.to(() => MapView(destination: place));
           },
           child: Card(
             elevation: 10,

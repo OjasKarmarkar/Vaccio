@@ -172,7 +172,7 @@ class _OnBoardingState extends State<OnBoarding> {
               child: Align(
                 alignment: Alignment.bottomCenter,
                 child: Padding(
-                  padding: EdgeInsets.only(bottom: 50),
+                  padding: EdgeInsets.only(bottom: 20 , top:20),
                   child: DotsIndicator(
                     dotsCount: onboardData.length + 1,
                     position: _currentPageNotifier.value.toDouble(),

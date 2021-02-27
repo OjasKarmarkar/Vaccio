@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:vaccio/controller/AppController.dart';
+import 'package:vaccio/onboarding/onboarding.dart';
 import 'package:vaccio/res/colors.dart' as colors;
 
 import 'About.dart';
@@ -48,7 +49,7 @@ class Settings extends StatelessWidget {
                 style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
               settingsTile("About Us", () {
-                Get.to(About());
+                Get.to(() => About());
               }),
               settingsTile("Donate A Coffee", () async {
                 const url = "https://www.paypal.com/paypalme/ojask002";
@@ -83,7 +84,9 @@ class Settings extends StatelessWidget {
                       borderRadius: BorderRadius.circular(5)),
                   child: OutlineButton(
                     onPressed: () async {
-                      appController.signOut();
+                      appController.signOut().then((value) {
+                        Get.off(() => OnBoarding());
+                      });
                     },
                     child: Text(
                       'Log Out',
@@ -93,7 +96,7 @@ class Settings extends StatelessWidget {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.fromLTRB(20.0, 10.0, 0, 10),
+                padding: const EdgeInsets.fromLTRB(20.0, 20.0, 0, 10),
                 child: Text(
                   "App Version - 1B - Beta",
                   style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold),

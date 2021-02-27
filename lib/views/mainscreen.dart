@@ -74,11 +74,11 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
                   label: "Appointments"),
               BottomNavigationBarItem(
                   activeIcon: Icon(
-                    FeatherIcons.speaker,
+                    FeatherIcons.alertTriangle,
                     color: colors.c4,
                   ),
                   icon: Icon(
-                    FeatherIcons.speaker,
+                    FeatherIcons.alertTriangle,
                     color: Colors.grey,
                   ),
                   label: "Precautions"),

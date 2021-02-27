@@ -85,9 +85,7 @@ class AppController extends GetxController {
   }
 
   Future<void> signOut() async {
-    return Future.wait([
-      FirebaseAuth.instance.signOut(),
-      _googleSignIn.signOut(),
-    ]);
+    FirebaseAuth.instance.signOut();
+    _googleSignIn.signOut();
   }
 }

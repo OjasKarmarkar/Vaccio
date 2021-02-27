@@ -2,8 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:get/get.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:vaccio/controller/AppController.dart';
+import 'package:vaccio/controller/DataController.dart';
 import 'package:vaccio/res/colors.dart' as colors;
+
+import 'Nearby.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -11,6 +15,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final dataController = Get.put(DataController());
   List<String> qs = [
     'Is it mandatory to take the vacine?',
     'Is it necessary for a COVID recovered person to take the vaccine?',
@@ -27,10 +32,26 @@ class _HomeScreenState extends State<HomeScreen> {
   ];
 
   Widget _faq(String q, String a) {
-    ListTile(
-      title: Text(q),
-      subtitle: Text('a'),
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 5.0),
+      child: ListTile(
+        title: Padding(
+          padding: EdgeInsets.only(bottom: 5),
+          child: Text(
+            "Q. $q",
+            style: TextStyle(
+                fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),
+          ),
+        ),
+        subtitle: Text("> $a"),
+      ),
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    dataController.fetchCentres();
   }
 
   final appController = Get.put(AppController());
@@ -40,86 +61,101 @@ class _HomeScreenState extends State<HomeScreen> {
       backgroundColor: Colors.white,
       body: Padding(
         padding: const EdgeInsets.all(20.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(
-              height: 50,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  appController.name.value ?? "Jane",
-                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                ),
-                appController.imgURl.value != null
-                    ? Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Container(
-                            width: 40.0,
-                            height: 40.0,
-                            decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                image: DecorationImage(
-                                    fit: BoxFit.fill,
-                                    image: NetworkImage(
-                                        '${appController.imgURl.value}')))),
-                      )
-                    : CircleAvatar(
-                        radius: 20,
-                        backgroundColor: colors.c4,
-                        backgroundImage: AssetImage('assets/images/logo.png'),
-                        // backgroundImage: Image.asset(
-                        //   'assets/images/logo.png',
-                        //   height: 100,
-                        //   width: 100,
-                        // ),
+        child: SingleChildScrollView(
+          physics: BouncingScrollPhysics(),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                height: 50,
+              ),
+              Obx(() => Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        appController.name.value ?? "Welcome!",
+                        style: TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black),
                       ),
-              ],
-            ),
-            Padding(
-                padding: EdgeInsets.only(top: 50.0, bottom: 5.0),
-                child: InkWell(
-                  onTap: () {},
-                  child: Card(
-                    elevation: 10,
-                    shape: BeveledRectangleBorder(
-                      borderRadius: BorderRadius.circular(5.0),
-                    ),
-                    child: Row(
-                      children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Container(
-                            width: 80.0,
-                            height: 80.0,
-                            child: Icon(
-                              FeatherIcons.info,
-                              color: colors.c4,
-                              size: 30,
+                      appController.imgURl.value != null
+                          ? Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Container(
+                                  width: 40.0,
+                                  height: 40.0,
+                                  decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      image: DecorationImage(
+                                          fit: BoxFit.fill,
+                                          image: NetworkImage(
+                                              '${appController.imgURl.value}')))),
+                            )
+                          : CircleAvatar(
+                              radius: 20,
+                              backgroundColor: colors.c4,
+                              backgroundImage:
+                                  AssetImage('assets/images/logo.png'),
+                              // backgroundImage: Image.asset(
+                              //   'assets/images/logo.png',
+                              //   height: 100,
+                              //   width: 100,
+                              // ),
+                            ),
+                    ],
+                  )),
+              Padding(
+                  padding: EdgeInsets.only(top: 50.0, bottom: 5.0),
+                  child: InkWell(
+                    onTap: () {},
+                    child: Card(
+                      elevation: 10,
+                      shape: BeveledRectangleBorder(
+                        borderRadius: BorderRadius.circular(5.0),
+                      ),
+                      child: Row(
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Container(
+                              width: 50.0,
+                              height: 90.0,
+                              child: Icon(
+                                FeatherIcons.info,
+                                color: colors.c4,
+                                size: 30,
+                              ),
                             ),
                           ),
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            StreamBuilder(
-                              stream: FirebaseFirestore.instance
-                                  .collection("centres")
-                                  .snapshots(),
-                              builder: (context, snapshot) {
-                                if (snapshot.data != null) {
-                                  if (snapshot.data.docs != null &&
-                                      snapshot.data.docs.isEmpty == false) {
-                                    var count = snapshot.data.docs.length;
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              StreamBuilder(
+                                stream: FirebaseFirestore.instance
+                                    .collection("centres")
+                                    .snapshots(),
+                                builder: (context, snapshot) {
+                                  if (snapshot.data != null) {
+                                    if (snapshot.data.docs != null &&
+                                        snapshot.data.docs.isEmpty == false) {
+                                      var count = snapshot.data.docs.length;
 
-                                    return Text(
-                                      "Total Vaccination Centres : $count",
-                                      style: TextStyle(
-                                          color: Colors.black, fontSize: 15),
-                                    );
+                                      return Text(
+                                        "Vaccination Centres  :  $count",
+                                        style: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold),
+                                      );
+                                    } else {
+                                      return Text(
+                                        "Total Vaccination Centres : 0",
+                                        style: TextStyle(
+                                            color: Colors.black, fontSize: 18),
+                                      );
+                                    }
                                   } else {
                                     return Text(
                                       "Total Vaccination Centres : 0",
@@ -127,29 +163,65 @@ class _HomeScreenState extends State<HomeScreen> {
                                           color: Colors.black, fontSize: 15),
                                     );
                                   }
-                                } else {
-                                  return Text(
-                                    "Total Vaccination Centres : 0",
-                                    style: TextStyle(
-                                        color: Colors.black, fontSize: 15),
-                                  );
-                                }
-                              },
-                            ),
-                          ],
-                        )
-                      ],
+                                },
+                              ),
+                            ],
+                          )
+                        ],
+                      ),
                     ),
+                  )),
+              InkWell(
+                onTap: () {
+                  Get.to(() => Nearby(
+                      vaccineCentres: List.from(dataController.centres)));
+                },
+                child: Card(
+                  elevation: 10,
+                  shape: BeveledRectangleBorder(
+                    borderRadius: BorderRadius.circular(5.0),
                   ),
-                )),
-            Padding(
-              padding: EdgeInsets.only(top: 30.0, bottom: 5.0),
-              child: Text(
-                "FAQ's",
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                  child: Row(
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                            width: 90.0,
+                            height: 90.0,
+                            child: Image.asset("assets/images/vaccine.jpg")),
+                      ),
+                      Center(
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            'Click To See \nVaccine Centres Nearby!',
+                            style: TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
               ),
-            )
-          ],
+              Padding(
+                padding: EdgeInsets.only(top: 30.0, left: 10),
+                child: Text(
+                  "FAQ's",
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                ),
+              ),
+              ListView.builder(
+                  physics: NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  itemBuilder: (context, index) {
+                    return _faq(qs[index], ans[index]);
+                  },
+                  itemCount: qs.length)
+            ],
+          ),
         ),
       ),
     );

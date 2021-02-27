@@ -38,7 +38,7 @@ class _PrecautionsState extends State<Precautions> {
                     ),
                     SymptomCard(
                       image: "assets/images/caugh.png",
-                      title: "Caugh",
+                      title: "Cough",
                     ),
                     SymptomCard(
                       image: "assets/images/fever.png",
