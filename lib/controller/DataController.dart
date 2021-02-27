@@ -22,13 +22,14 @@ class DataController extends GetxController {
     update();
   }
 
-  void bookappt(
-      double lat, double long, String uid, DateTime time, int persons) async {
+  void bookappt(double lat, double long, String uid, DateTime time, int persons,
+      String aadhar) async {
     FirebaseFirestore.instance.collection("appointments").add({
       "place": GeoPoint(lat, long),
       "uID": uid,
       "timings": time,
-      "persons": persons
+      "persons": persons,
+      "aadhar": aadhar
     }).then((value) {
       Get.off(MainScreen());
     }).catchError((e) => {});

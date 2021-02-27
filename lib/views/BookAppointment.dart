@@ -23,6 +23,7 @@ class _BookAppointmentState extends State<BookAppointment> {
   final format = DateFormat("yyyy-MM-dd HH:mm");
   DateTime dateTime;
   final appController = Get.put(AppController());
+  final TextEditingController _aadharController = new TextEditingController();
 
   openMap(LatLng lng) async {
     double latitude = lng.latitude;
@@ -58,6 +59,7 @@ class _BookAppointmentState extends State<BookAppointment> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        resizeToAvoidBottomInset: false,
         floatingActionButton: Container(
           height: 55.0,
           width: 55.0,
@@ -65,13 +67,16 @@ class _BookAppointmentState extends State<BookAppointment> {
             heroTag: "l",
             backgroundColor: colors.c4,
             onPressed: () async {
-              if (dateTime != null) {
+              if (dateTime != null &&
+                  _aadharController.text != null &&
+                  _aadharController.text.length == 12) {
                 double lat = widget.centre['location'].latitude;
                 double long = widget.centre['location'].longitude;
                 String uid = appController.uID.value;
                 int persons = 1;
+                String aadhar = _aadharController.text;
 
-                dataController.bookappt(lat, long, uid, dateTime, persons);
+                dataController.bookappt(lat, long, uid, dateTime, persons , aadhar);
               } else {
                 Get.snackbar('Error', "Please fill all the fields");
               }
@@ -141,11 +146,18 @@ class _BookAppointmentState extends State<BookAppointment> {
                   Icon(
                     FeatherIcons.phoneCall,
                     color: colors.c4,
-                  ),
-                  () {}),
+                  ), () async {
+                var no = widget.centre['contact'];
+                var url = "tel:$no";
+                if (await canLaunch(url)) {
+                  await launch(url);
+                } else {
+                  throw 'Could not launch $url';
+                }
+              }),
               Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 5.0, horizontal: 10.0),
+                padding: const EdgeInsets.symmetric(
+                    vertical: 10.0, horizontal: 10.0),
                 child: DateTimeField(
                   decoration: InputDecoration(
                     suffixIcon: Icon(
@@ -182,6 +194,26 @@ class _BookAppointmentState extends State<BookAppointment> {
                   onChanged: (currentValue) {
                     dateTime = currentValue;
                   },
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                    vertical: 10.0, horizontal: 10.0),
+                child: TextField(
+                  controller: _aadharController,
+                  decoration: InputDecoration(
+                    suffixIcon: Icon(
+                      FeatherIcons.user,
+                      color: colors.c4,
+                    ),
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: Colors.red, //this has no effect
+                      ),
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                    hintText: "Aadhar No.",
+                  ),
                 ),
               )
             ],

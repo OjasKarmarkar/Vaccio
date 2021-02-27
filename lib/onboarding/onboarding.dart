@@ -144,7 +144,7 @@ class _OnBoardingState extends State<OnBoarding> {
                                 }
                               },
                               child: Text(
-                                'Sign Up With G',
+                                'Sign Up With Google',
                                 style: TextStyle(
                                     color: Colors.black, fontSize: 20),
                               ),
@@ -172,7 +172,7 @@ class _OnBoardingState extends State<OnBoarding> {
               child: Align(
                 alignment: Alignment.bottomCenter,
                 child: Padding(
-                  padding: EdgeInsets.only(bottom: 20 , top:20),
+                  padding: EdgeInsets.only(bottom: 20, top: 20),
                   child: DotsIndicator(
                     dotsCount: onboardData.length + 1,
                     position: _currentPageNotifier.value.toDouble(),
