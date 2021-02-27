@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "276672221894",
+    "project_id": "vaccio-bc017",
+    "storage_bucket": "vaccio-bc017.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:276672221894:android:bcf6d44ed0e9896c2d7dc7",
+        "android_client_info": {
+          "package_name": "com.vaccio.maps"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "276672221894-1nqtpb0ohcrlr5qoek7h85lrhv146q7l.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.vaccio.maps",
+            "certificate_hash": "a41d97cb38e26e7118523982007153b9515b7143"
+          }
+        },
+        {
+          "client_id": "276672221894-cemged1gappg9eqpfpa8bgtubpimk9u9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBFV91gbiVcwT9Ned7wOFtPFmjk7qsdxxM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "276672221894-cemged1gappg9eqpfpa8bgtubpimk9u9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
