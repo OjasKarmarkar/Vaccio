@@ -256,7 +256,7 @@ class _NearbyState extends State<Nearby> {
                           ),
                           SizedBox(height: 10),
                           _textField(
-                              label: 'Start',
+                              label: 'Your Location',
                               hint: 'Choose starting point',
                               suffixIcon: IconButton(
                                 icon: Icon(Icons.my_location),

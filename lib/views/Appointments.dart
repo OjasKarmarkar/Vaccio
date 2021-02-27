@@ -52,6 +52,21 @@ class _AppointmentsState extends State<Appointments> {
                       .where('uID', isEqualTo: appController.uID.value)
                       .snapshots(),
                   builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Center(
+                          child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Padding(
+                            padding: EdgeInsets.only(top: 300.0),
+                            child: CircularProgressIndicator(
+                              backgroundColor: colors.c4,
+                            ),
+                          ),
+                        ],
+                      ));
+                    }
                     if (snapshot.data != null) {
                       if (snapshot.data.docs != null &&
                           snapshot.data.docs.isEmpty == false) {
