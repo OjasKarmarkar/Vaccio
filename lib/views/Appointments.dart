@@ -20,6 +20,14 @@ class Appointments extends StatefulWidget {
 
 class _AppointmentsState extends State<Appointments> {
   final appController = Get.put(AppController());
+  final dataController = Get.put(DataController());
+
+  @override
+  void initState() {
+    dataController.fetchCentres();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -88,7 +96,10 @@ class _AppointmentsState extends State<Appointments> {
                                         color: Colors.black,
                                         borderRadius: BorderRadius.circular(5)),
                                     child: OutlineButton(
-                                      onPressed: () => Get.to(() => Nearby()),
+                                      onPressed: () => Get.to(() => Nearby(
+                                            vaccineCentres: List.from(
+                                                dataController.centres),
+                                          )),
                                       child: Text(
                                         'Book one now!',
                                         style: TextStyle(
@@ -104,22 +115,33 @@ class _AppointmentsState extends State<Appointments> {
                       }
                     } else {
                       return Padding(
-                        padding:
-                            EdgeInsets.only(top: 50.0, left: 20.0, right: 20.0),
+                        padding: EdgeInsets.only(top: 100.0),
                         child: Center(
-                          child: Container(
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                                color: Colors.black,
-                                borderRadius: BorderRadius.circular(5)),
-                            child: OutlineButton(
-                              onPressed: () => Get.to(() => Nearby()),
-                              child: Text(
-                                'Oopsie! , try Again!',
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 20),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              new SvgPicture.asset(
+                                "assets/images/mask-man.svg",
+                                height: 300,
+                                fit: BoxFit.fitWidth,
                               ),
-                            ),
+                              Padding(
+                                padding: const EdgeInsets.only(top: 20.0),
+                                child: Text("You don't have any appointments!"),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(
+                                    top: 50.0, left: 20.0, right: 20.0),
+                                child: Container(
+                                  width: double.infinity,
+                                  child: Text(
+                                    'Book one now!',
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 20),
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       );
@@ -175,7 +197,6 @@ class _AppointmentCardState extends State<AppointmentCard> {
   void initState() {
     finalPlace();
     super.initState();
-    dataController.fetchCentres();
   }
 
   @override

@@ -121,20 +121,22 @@ class _NearbyState extends State<Nearby> {
   }
 
   void _addMarkers() {
-    setState(() {});
-    widget.vaccineCentres.forEach((element) {
-      var pinPosition = element['location'];
+    if (widget.vaccineCentres != null) {
+      setState(() {});
+      widget.vaccineCentres.forEach((element) {
+        var pinPosition = element['location'];
 
-      _markers.add(Marker(
-          infoWindow: InfoWindow(
-              title: element['name'],
-              onTap: () {
-                Get.to(()=>BookAppointment(centre:element));
-              }),
-          markerId: MarkerId(DateTime.now().toString()),
-          position: pinPosition,
-          icon: pinLocationIcon));
-    });
+        _markers.add(Marker(
+            infoWindow: InfoWindow(
+                title: element['name'],
+                onTap: () {
+                  Get.to(() => BookAppointment(centre: element));
+                }),
+            markerId: MarkerId(DateTime.now().toString()),
+            position: pinPosition,
+            icon: pinLocationIcon));
+      });
+    }
   }
 
   @override
@@ -249,7 +251,7 @@ class _NearbyState extends State<Nearby> {
                         mainAxisSize: MainAxisSize.min,
                         children: <Widget>[
                           Text(
-                            'Places',
+                            'Vaccio Maps',
                             style: TextStyle(fontSize: 20.0),
                           ),
                           SizedBox(height: 10),
@@ -296,7 +298,7 @@ class _NearbyState extends State<Nearby> {
                           width: 56,
                           height: 56,
                           child: Icon(
-                            FeatherIcons.navigation,
+                            FeatherIcons.mapPin,
                             color: Colors.white,
                           ),
                         ),

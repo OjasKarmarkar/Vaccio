@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:get/get.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:vaccio/controller/AppController.dart';
 import 'package:vaccio/controller/DataController.dart';
 import 'package:vaccio/res/colors.dart' as colors;

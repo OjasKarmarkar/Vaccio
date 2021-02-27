@@ -292,7 +292,7 @@ class _MapViewState extends State<MapView> {
     return false;
   }
 
-  // Create the polylines for showing the route between two places
+  // Create the polylines for showing the route between two Vaccio Maps
   _createPolylines(Position start, Position destination) async {
     polylinePoints = PolylinePoints();
     PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
@@ -421,7 +421,7 @@ class _MapViewState extends State<MapView> {
                         mainAxisSize: MainAxisSize.min,
                         children: <Widget>[
                           Text(
-                            'Places',
+                            'Vaccio Maps',
                             style: TextStyle(fontSize: 20.0),
                           ),
                           SizedBox(height: 10),
@@ -527,7 +527,7 @@ class _MapViewState extends State<MapView> {
                           width: 56,
                           height: 56,
                           child: Icon(
-                            FeatherIcons.navigation,
+                            FeatherIcons.mapPin,
                             color: Colors.white,
                           ),
                         ),

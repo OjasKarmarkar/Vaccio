@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:get/get.dart';
 import 'package:vaccio/controller/AppController.dart';
+import 'package:vaccio/controller/DataController.dart';
 import 'package:vaccio/res/colors.dart' as colors;
 import 'Home.dart';
 import 'Precautions.dart';
@@ -16,9 +17,11 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
   TabController _tabController;
   var nav = Get.put(AppController());
+  final dataController = Get.put(DataController());
   @override
   void initState() {
     super.initState();
+    dataController.fetchCentres();
     _tabController = TabController(vsync: this, length: _listTabs.length);
     _tabController.animateTo(nav.index.value);
   }

@@ -56,7 +56,7 @@ class About extends StatelessWidget {
             child: IconButton(
                 splashColor: Colors.transparent,
                 icon: Icon(
-                  FeatherIcons.arrowLeft,
+                  FeatherIcons.chevronLeft,
                   color: Colors.black,
                   size: 24,
                 ),

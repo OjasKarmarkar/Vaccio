@@ -54,7 +54,7 @@ class _PrecautionsState extends State<Precautions> {
               SizedBox(height: 20),
               PreventCard(
                 text:
-                    "Since the start of the coronavirus outbreak some places have fully embraced wearing facemasks",
+                    "Since the start of the coronavirus outbreak some Vaccio Maps have fully embraced wearing facemasks",
                 image: "assets/images/wear_mask.png",
                 title: "Wear face mask",
               ),

@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:vaccio/controller/AppController.dart';
 import 'package:vaccio/onboarding/onboarding.dart';
-import 'package:vaccio/res/colors.dart' as colors;
 
 import 'About.dart';
 
@@ -26,7 +24,7 @@ class Settings extends StatelessWidget {
           "$title",
           style: TextStyle(fontWeight: FontWeight.w500, fontSize: 18),
         ),
-        trailing: Icon(FeatherIcons.arrowRight, color: Colors.black),
+        trailing: Icon(FeatherIcons.chevronRight, color: Colors.black),
       ),
     );
   }

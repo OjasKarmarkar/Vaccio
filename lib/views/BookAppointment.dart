@@ -1,12 +1,9 @@
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
-import 'package:geopoint/geopoint.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-import 'package:http/http.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:vaccio/controller/AppController.dart';
@@ -69,7 +66,6 @@ class _BookAppointmentState extends State<BookAppointment> {
             backgroundColor: colors.c4,
             onPressed: () async {
               if (dateTime != null) {
-                Map<String, dynamic> appt = new Map();
                 double lat = widget.centre['location'].latitude;
                 double long = widget.centre['location'].longitude;
                 String uid = appController.uID.value;
@@ -96,7 +92,7 @@ class _BookAppointmentState extends State<BookAppointment> {
             child: IconButton(
                 splashColor: Colors.transparent,
                 icon: Icon(
-                  FeatherIcons.arrowLeft,
+                  FeatherIcons.chevronLeft,
                   color: Colors.black,
                   size: 24,
                 ),
