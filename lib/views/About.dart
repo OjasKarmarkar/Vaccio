@@ -14,7 +14,7 @@ class About extends StatelessWidget {
           child: Container(
             child: CircleAvatar(
                 backgroundColor: Colors.white,
-                child: Icon(FeatherIcons.user, color: colors.c4)),
+                child: Icon(FeatherIcons.user, color: Colors.black)),
             decoration: BoxDecoration(
               border: Border.all(color: colors.c4, width: 2.0),
               shape: BoxShape.circle,
@@ -39,10 +39,6 @@ class About extends StatelessWidget {
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
           ),
         ),
-        trailing: Icon(
-          FeatherIcons.arrowRight,
-          color: colors.c1,
-        ),
       ),
     );
   }
@@ -61,8 +57,8 @@ class About extends StatelessWidget {
                 splashColor: Colors.transparent,
                 icon: Icon(
                   FeatherIcons.arrowLeft,
-                  color: colors.c1,
-                  size: 36,
+                  color: Colors.black,
+                  size: 24,
                 ),
                 onPressed: () {
                   Get.back();
@@ -72,7 +68,7 @@ class About extends StatelessWidget {
             padding: const EdgeInsets.all(8.0),
             child: RichText(
               text: TextSpan(
-                text: 'About Us',
+                text: 'Goal Diggers',
                 style: GoogleFonts.poppins(
                     textStyle: TextStyle(
                         fontSize: 20,
@@ -86,7 +82,9 @@ class About extends StatelessWidget {
         body: Column(
           children: [
             tile("Ojas Karmarkar", "App Developer", () async {}),
-            tile("PeratchiSelvan Kumar", "App Developer", () async {}),
+            tile("Dhruv Gada", "App Developer", () async {}),
+            tile("Rosita D'mello", "App Designer", () async {}),
+            tile("Lokita Varma", "App Designer", () async {}),
             Expanded(
               child: Align(
                   alignment: FractionalOffset.bottomCenter,

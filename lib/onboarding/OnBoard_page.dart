@@ -15,6 +15,9 @@ class OnBoardPage extends StatefulWidget {
 }
 
 class _OnBoardPageState extends State<OnBoardPage> {
+
+ 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

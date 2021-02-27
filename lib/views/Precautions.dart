@@ -60,7 +60,7 @@ class _PrecautionsState extends State<Precautions> {
               ),
               PreventCard(
                 text:
-                    "Since the start of the coronavirus outbreak some places have fully embraced wearing facemasks",
+                    "Washing your hands is a very simple but effective solution against covid-19",
                 image: "assets/images/wash_hands.png",
                 title: "Wash your hands",
               ),

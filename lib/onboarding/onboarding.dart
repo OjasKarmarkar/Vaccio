@@ -1,15 +1,13 @@
 import 'package:dots_indicator/dots_indicator.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 import 'package:get/get.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vaccio/controller/AppController.dart';
 import 'package:vaccio/views/mainscreen.dart';
 import 'Data_Model.dart';
 import 'OnBoard_page.dart';
 import 'package:flutter/material.dart';
+import 'package:vaccio/res/colors.dart' as colors;
 
 class OnBoarding extends StatefulWidget {
   @override
@@ -50,6 +48,16 @@ class _OnBoardingState extends State<OnBoarding> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
+                        CircleAvatar(
+                          radius: 50,
+                          backgroundColor: colors.c4,
+                          backgroundImage: AssetImage('assets/images/logo.png'),
+                          // backgroundImage: Image.asset(
+                          //   'assets/images/logo.png',
+                          //   height: 100,
+                          //   width: 100,
+                          // ),
+                        ),
                         Padding(
                           padding: const EdgeInsets.only(top: 40.0),
                           child: Text(
@@ -169,7 +177,7 @@ class _OnBoardingState extends State<OnBoarding> {
                     dotsCount: onboardData.length + 1,
                     position: _currentPageNotifier.value.toDouble(),
                     decorator: DotsDecorator(
-                      activeColor: Colors.blueGrey,
+                      activeColor: colors.c4,
                       size: const Size.square(9.0),
                       activeSize: const Size(18.0, 9.0),
                       activeShape: RoundedRectangleBorder(

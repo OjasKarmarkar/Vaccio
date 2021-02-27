@@ -8,6 +8,7 @@ import 'package:vaccio/res/colors.dart' as colors;
 import 'dart:core';
 import 'package:vaccio/controller/AppController.dart';
 import 'package:get/get.dart';
+import 'package:vaccio/views/MapView.dart';
 
 class Appointments extends StatefulWidget {
   @override
@@ -18,7 +19,6 @@ class _AppointmentsState extends State<Appointments> {
   final appController = Get.put(AppController());
   @override
   Widget build(BuildContext context) {
-   
     return Scaffold(
         backgroundColor: Colors.white,
         body: SingleChildScrollView(
@@ -120,79 +120,95 @@ class _AppointmentsState extends State<Appointments> {
   }
 }
 
-class AppointmentCard extends StatelessWidget {
+class AppointmentCard extends StatefulWidget {
   final GeoPoint gp;
   final Timestamp text;
   final String persons;
   const AppointmentCard({Key key, this.gp, this.text, this.persons})
       : super(key: key);
 
+  @override
+  _AppointmentCardState createState() => _AppointmentCardState();
+}
+
+class _AppointmentCardState extends State<AppointmentCard> {
+  String place = '', addressline = '';
   String formatDate(var date) {
     DateTime myDateTime = (date).toDate();
     return DateFormat.yMMMd().add_jm().format(myDateTime).toString();
   }
 
-  String finalPlace() {
-    _getLocation().then((value) {
-      print(value);
-      return value == null ? "Navi Mumbai" : value;
-    });
-    return "Navi Mumbai";
-  }
-
   Future<String> _getLocation() async {
-    GeoPoint geoPoint = gp;
-    print(gp.latitude);
+    GeoPoint geoPoint = widget.gp;
     final coordinates = new Coordinates(geoPoint.latitude, geoPoint.longitude);
-    print(coordinates);
     var addresses =
         await Geocoder.local.findAddressesFromCoordinates(coordinates);
     var first = addresses.first;
-    print("${first.featureName} : ${first.addressLine}");
-    return first.featureName;
+    print("${first.locality}");
+    return first.locality;
+  }
+
+  void finalPlace() {
+    _getLocation().then((value) {
+      setState(() {
+        place = value;
+      });
+    });
+    print(place);
+  }
+
+  @override
+  void initState() {
+    finalPlace();
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Padding(
         padding: EdgeInsets.only(top: 5.0, bottom: 5.0),
-        child: Card(
-          elevation: 10,
-          shape: BeveledRectangleBorder(
-            borderRadius: BorderRadius.circular(5.0),
-          ),
-          child: Row(
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Container(
-                  width: 80.0,
-                  height: 80.0,
-                  child: Icon(
-                    FeatherIcons.calendar,
-                    color: colors.c4,
-                    size: 30,
+        child: InkWell(
+          onTap: () {
+            Get.to(MapView(destination:place));
+          },
+          child: Card(
+            elevation: 10,
+            shape: BeveledRectangleBorder(
+              borderRadius: BorderRadius.circular(5.0),
+            ),
+            child: Row(
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Container(
+                    width: 80.0,
+                    height: 80.0,
+                    child: Icon(
+                      FeatherIcons.calendar,
+                      color: colors.c4,
+                      size: 30,
+                    ),
                   ),
                 ),
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    "Place : " + finalPlace(),
-                    style: TextStyle(color: Colors.white, fontSize: 18),
-                  ),
-                  Text(
-                    "Timings : " + formatDate(text),
-                    style: TextStyle(color: Colors.black, fontSize: 15),
-                  ),
-                  Text(
-                    "People : " + persons,
-                    style: TextStyle(color: Colors.black, fontSize: 15),
-                  )
-                ],
-              )
-            ],
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      "Place : " + place,
+                      style: TextStyle(color: Colors.black, fontSize: 15),
+                    ),
+                    Text(
+                      "Timings : " + formatDate(widget.text),
+                      style: TextStyle(color: Colors.black, fontSize: 15),
+                    ),
+                    Text(
+                      "People : " + widget.persons,
+                      style: TextStyle(color: Colors.black, fontSize: 15),
+                    )
+                  ],
+                )
+              ],
+            ),
           ),
         ));
   }

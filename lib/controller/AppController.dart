@@ -8,6 +8,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 class AppController extends GetxController {
   var index = 0.obs;
   RxString uID = ''.obs;
+  RxString name = ''.obs;
+  RxString imgURl = 'https://randomuser.me/api/portraits/men/11.jpg'.obs;
   SharedPreferences preferences;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
 
@@ -19,6 +21,7 @@ class AppController extends GetxController {
   void onInit() {
     init();
     getUID();
+    getDetails();
     super.onInit();
   }
 
@@ -31,16 +34,25 @@ class AppController extends GetxController {
     });
   }
 
+  getDetails() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    uID.value = preferences.getString('uID');
+    name.value = preferences.getString('name');
+    imgURl.value = preferences.getString('image');
+  }
+
   getUID() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     uID.value = preferences.getString('uID');
+    name.value = preferences.getString('name');
   }
 
-  saveUser(String uID, String name) async {
+  saveUser(String uID, String name, String imgurl) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     print(uID);
     await preferences.setString('uID', uID);
     await preferences.setString('name', name);
+    await preferences.setString('image', imgurl);
     await preferences.setBool('seen', true);
   }
 
@@ -65,7 +77,7 @@ class AppController extends GetxController {
 
     if (user != null) {
       print(user.uid);
-      saveUser(user.uid, user.displayName);
+      saveUser(user.uid, user.displayName, user.photoURL);
       return 1;
     } else {
       return 0;
