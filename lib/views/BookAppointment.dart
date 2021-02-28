@@ -76,7 +76,8 @@ class _BookAppointmentState extends State<BookAppointment> {
                 int persons = 1;
                 String aadhar = _aadharController.text;
 
-                dataController.bookappt(lat, long, uid, dateTime, persons , aadhar);
+                dataController.bookappt(
+                    lat, long, uid, dateTime, persons, aadhar);
               } else {
                 Get.snackbar('Error', "Please fill all the fields");
               }
@@ -196,6 +197,11 @@ class _BookAppointmentState extends State<BookAppointment> {
                   },
                 ),
               ),
+              Padding(
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 10.0, horizontal: 10.0),
+                  child: Text(
+                      '(Please Choose Appointment Timing Only Between 10 AM - 2 PM Or Your Appointment Will Be Invalid)')),
               Padding(
                 padding: const EdgeInsets.symmetric(
                     vertical: 10.0, horizontal: 10.0),
