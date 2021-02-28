@@ -4,8 +4,11 @@ import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:vaccio/res/colors.dart' as colors;
 
 import 'dart:math' show cos, sqrt, asin;
+
+import 'package:url_launcher/url_launcher.dart';
 
 class MapView extends StatefulWidget {
   final String destination;
@@ -30,12 +33,21 @@ class _MapViewState extends State<MapView> {
   String _startAddress = '';
   String _destinationAddress = '';
   String _placeDistance;
-
+  BitmapDescriptor pinLocationIcon;
   Set<Marker> markers = {};
+  double destLat = 0;
+  double destlong = 0;
   final Set<Polyline> _polyline = {};
   PolylinePoints polylinePoints;
   Map<PolylineId, Polyline> polylines = {};
   List<LatLng> polylineCoordinates = [];
+
+  void setCustomMapPin() async {
+    pinLocationIcon = await BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(devicePixelRatio: 2.5),
+        'assets/images/destination_map_marker.png');
+    setState(() {});
+  }
 
   final _scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -164,17 +176,16 @@ class _MapViewState extends State<MapView> {
 
         // Destination Location Marker
         Marker destinationMarker = Marker(
-          markerId: MarkerId('$destinationCoordinates'),
-          position: LatLng(
-            destinationCoordinates.latitude,
-            destinationCoordinates.longitude,
-          ),
-          infoWindow: InfoWindow(
-            title: 'Destination',
-            snippet: _destinationAddress,
-          ),
-          icon: BitmapDescriptor.defaultMarker,
-        );
+            markerId: MarkerId('$destinationCoordinates'),
+            position: LatLng(
+              destinationCoordinates.latitude,
+              destinationCoordinates.longitude,
+            ),
+            infoWindow: InfoWindow(
+              title: 'Destination',
+              snippet: _destinationAddress,
+            ),
+            icon: pinLocationIcon);
 
         // Adding the markers to the list
         markers.add(startMarker);
@@ -249,8 +260,10 @@ class _MapViewState extends State<MapView> {
         List<LatLng> latlng = [];
         LatLng _new =
             LatLng(startCoordinates.latitude, startCoordinates.longitude);
-        LatLng _news =
-            LatLng(startCoordinates.latitude, startCoordinates.longitude);
+        LatLng _news = LatLng(
+            destinationCoordinates.latitude, destinationCoordinates.longitude);
+        destLat = destinationCoordinates.latitude;
+        destlong = destinationCoordinates.longitude;
         latlng.add(_new);
         latlng.add(_news);
 
@@ -259,7 +272,7 @@ class _MapViewState extends State<MapView> {
           visible: true,
           //latlng is List<LatLng>
           points: latlng,
-          color: Colors.blue,
+          color: colors.c4,
         ));
         print(_polyline);
 
@@ -321,6 +334,7 @@ class _MapViewState extends State<MapView> {
   @override
   void initState() {
     super.initState();
+    setCustomMapPin();
     _getCurrentLocation();
   }
 
@@ -354,7 +368,7 @@ class _MapViewState extends State<MapView> {
               child: Padding(
                 padding: const EdgeInsets.only(left: 10.0),
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
                     ClipOval(
                       child: Material(
@@ -497,7 +511,28 @@ class _MapViewState extends State<MapView> {
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Text(
-                                'Show Route',
+                                'Show Distance',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 20.0,
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(height: 5),
+                          RaisedButton(
+                            onPressed: (_startAddress != '' &&
+                                    _destinationAddress != '')
+                                ? () => showMaps()
+                                : null,
+                            color: Colors.black,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(5.0),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                'Show in Maps',
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 20.0,
@@ -554,5 +589,30 @@ class _MapViewState extends State<MapView> {
         ),
       ),
     );
+  }
+
+  void showMaps() async {
+    List<Location> startPlacemark = await locationFromAddress(_startAddress);
+    List<Location> destinationPlacemark =
+        await locationFromAddress(_destinationAddress);
+    if (startPlacemark != null && destinationPlacemark != null) {
+      Position startCoordinates = _startAddress == _currentAddress
+          ? Position(
+              latitude: _currentPosition.latitude,
+              longitude: _currentPosition.longitude)
+          : Position(
+              latitude: startPlacemark[0].latitude,
+              longitude: startPlacemark[0].longitude);
+      Position destinationCoordinates = Position(
+          latitude: destinationPlacemark[0].latitude,
+          longitude: destinationPlacemark[0].longitude);
+      String googleUrl =
+          'https://www.google.com/maps/search/?api=1&query=${destinationCoordinates.latitude},${destinationCoordinates.longitude}';
+      if (await canLaunch(googleUrl)) {
+        await launch(googleUrl);
+      } else {
+        throw 'Could not open the map.';
+      }
+    }
   }
 }

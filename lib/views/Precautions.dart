@@ -31,16 +31,16 @@ class _PrecautionsState extends State<Precautions> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    SymptomCard(
+                    InfoCard(
                       image: "assets/images/headache.png",
                       title: "Headache",
                       isActive: true,
                     ),
-                    SymptomCard(
+                    InfoCard(
                       image: "assets/images/caugh.png",
                       title: "Cough",
                     ),
-                    SymptomCard(
+                    InfoCard(
                       image: "assets/images/fever.png",
                       title: "Fever",
                     ),
@@ -152,11 +152,11 @@ class PreventCard extends StatelessWidget {
   }
 }
 
-class SymptomCard extends StatelessWidget {
+class InfoCard extends StatelessWidget {
   final String image;
   final String title;
   final bool isActive;
-  const SymptomCard({
+  const InfoCard({
     Key key,
     this.image,
     this.title,

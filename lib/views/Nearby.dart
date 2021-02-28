@@ -122,7 +122,6 @@ class _NearbyState extends State<Nearby> {
 
   void _addMarkers() {
     if (widget.vaccineCentres != null) {
-      setState(() {});
       widget.vaccineCentres.forEach((element) {
         var pinPosition = element['location'];
 
@@ -135,6 +134,7 @@ class _NearbyState extends State<Nearby> {
             markerId: MarkerId(DateTime.now().toString()),
             position: pinPosition,
             icon: pinLocationIcon));
+        setState(() {});
       });
     }
   }
@@ -144,7 +144,7 @@ class _NearbyState extends State<Nearby> {
     super.initState();
     setCustomMapPin();
     _getCurrentLocation();
-    _addMarkers();
+    //_addMarkers();
   }
 
   void setCustomMapPin() async {
@@ -175,8 +175,8 @@ class _NearbyState extends State<Nearby> {
               zoomGesturesEnabled: true,
               zoomControlsEnabled: false,
               onMapCreated: (GoogleMapController controller) {
-                setState(() {});
                 mapController = controller;
+                _addMarkers();
               },
             ),
             // Show zoom buttons
